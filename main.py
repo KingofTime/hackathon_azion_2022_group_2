@@ -2,10 +2,16 @@ import threading
 import os
 import argparse
 
+from mvp import Routine
 
-def run(semaphore: threading.BoundedSemaphore, link: str):
+
+def run(
+        semaphore: threading.BoundedSemaphore, 
+        link: str,
+        routine: Routine
+    ):
     semaphore.acquire()
-    print(link)
+    routine(link)
     semaphore.release()
 
 MAX_WORKERS = 4
@@ -26,8 +32,9 @@ if __name__ == "__main__":
     if args.input_path:
         input_path = args.input_path
 
+    routine = Routine("7b787f05-651f-4d29-b653-6704497d7536")
     semaphore = threading.BoundedSemaphore(value=max_workers)
     with open(input_path, "r") as file:
         for link in file.readlines():
-            thread = threading.Thread(target=run, args=(semaphore, link))
+            thread = threading.Thread(target=run, args=(semaphore, link, routine))
             thread.start()
