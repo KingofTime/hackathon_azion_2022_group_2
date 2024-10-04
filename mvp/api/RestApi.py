@@ -8,7 +8,12 @@ class RestApi:
     def get_headers() -> dict:
         return {}
     
-    def post(self, url:str, headers:dict, params:dict) -> Response:
+    def post(self, url:str, headers:dict={}, params:dict={}) -> Response:
         response = requests.post(url, headers=headers, params=params)
+        response.raise_for_status()
+        return response.json()
+    
+    def get(self, url:str, headers:dict={}, params:dict={}) -> Response:
+        response = requests.get(url, headers=headers, params=params)
         response.raise_for_status()
         return response.json()

@@ -6,6 +6,9 @@ class Routine:
         self.api_key = api_key
     
     def __call__(self, link:str):
-        print(link)
         api = WebPageTestAPI(self.api_key)
-        print(api.run_test(link))
+        response = api.run_test(link)
+        response_data = response.get("data")
+        if response_data:
+            test_id = response_data.get("testId")
+            test_result = api.get_test_result(test_id)

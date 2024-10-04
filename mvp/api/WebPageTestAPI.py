@@ -1,3 +1,5 @@
+import time
+
 from mvp.api import RestApi
 
 
@@ -22,5 +24,25 @@ class WebPageTestAPI(RestApi):
             'video': 'false'
         }
 
-        return self.post(endpoint, self.get_headers(), params)
+        return self.post(endpoint, self.get_headers(), params=params)
 
+    def get_test_result(self, test_id:str):
+        endpoint = f"{self.host}/jsonResult.php"
+        params = {
+            "test":test_id
+        }
+
+        while True:
+            response = self.get(endpoint, headers=self.get_headers(), params=params)
+            if not response:
+                print("Failed to get test results.")
+                break
+            status = response.get('statusCode')
+            if status == 200:
+                return response
+            elif status in [100, 101]:
+                print("Waiting for test completion...")
+                time.sleep(10)
+            else:
+                print(f"Test error: Status {status}")
+                return None
