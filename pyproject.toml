@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "MVP"
+version = "0.1.0"
+description = "MVP para o Hackaton 2024"
+authors = ["group-2"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
